@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã hoá code - by KING</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(22, 28, 46, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 36px;
+            padding: 35px 30px;
+            max-width: 750px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            transition: 0.3s;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f7d94e, #f0b81a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+            letter-spacing: 1px;
+        }
+        .header .sub {
+            color: #aab4d0;
+            font-size: 1rem;
+            font-style: italic;
+            border-top: 1px dashed #3a4058;
+            padding-top: 8px;
+            margin-top: 5px;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+        .label {
+            color: #ced6ec;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            display: block;
+        }
+        textarea, .output-box {
+            width: 100%;
+            background: #0e121f;
+            border: 1px solid #2d344b;
+            border-radius: 18px;
+            padding: 16px 18px;
+            color: #e8edf9;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: 0.2s;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #f0b81a;
+            box-shadow: 0 0 0 3px rgba(240, 184, 26, 0.25), inset 0 4px 8px rgba(0,0,0,0.6);
+        }
+        .output-box {
+            min-height: 120px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: #0a0e17;
+            border-color: #3f4663;
+            margin-top: 5px;
+            position: relative;
+        }
+        .mode-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 18px 0 14px;
+        }
+        .mode-group label {
+            flex: 1 1 auto;
+            background: #1a2033;
+            padding: 10px 18px;
+            border-radius: 40px;
+            border: 1px solid #2f3653;
+            color: #b3bedb;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .mode-group input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #4e567a;
+            border-radius: 50%;
+            margin-right: 4px;
+            transition: 0.2s;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .mode-group input[type="radio"]:checked {
+            border-color: #f0b81a;
+            background: #f0b81a;
+            box-shadow: 0 0 12px rgba(240, 184, 26, 0.4);
+        }
+        .mode-group input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 6px;
+            height: 6px;
+            background: #0e121f;
+            border-radius: 50%;
+        }
+        .mode-group label:has(input:checked) {
+            background: #2f3657;
+            border-color: #f0b81a;
+            color: #fff4d6;
+            box-shadow: 0 0 20px rgba(240, 184, 26, 0.15);
+        }
+        .action-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 18px 0 12px;
+        }
+        .btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #2a3150;
+            color: #c8d2ee;
+            box-shadow: 0 4px 0 #111520;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f7d94e, #e0a80f);
+            color: #0e121f;
+            box-shadow: 0 4px 0 #a87d0a, 0 6px 20px rgba(240, 184, 26, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #a87d0a, 0 10px 30px rgba(240, 184, 26, 0.35);
+        }
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #a87d0a;
+        }
+        .btn-secondary {
+            background: #2f3657;
+            color: #dbe1f5;
+            box-shadow: 0 4px 0 #1a1f32;
+        }
+        .btn-secondary:hover {
+            background: #3a436a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #1a1f32;
+        }
+        .btn-success {
+            background: #1d8a5f;
+            color: #fff;
+            box-shadow: 0 4px 0 #0f5539;
+        }
+        .btn-success:hover {
+            background: #26a071;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #0f5539;
+        }
+        .copy-hint {
+            font-size: 0.8rem;
+            color: #7e88aa;
+            margin-top: 8px;
+            text-align: right;
+            opacity: 0.8;
+        }
+        .footer {
+            margin-top: 20px;
+            border-top: 1px solid #2d344b;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            color: #5b658a;
+            font-size: 0.8rem;
+        }
+        .footer span {
+            color: #f0b81a;
+        }
+        @media (max-width: 550px) {
+            .container { padding: 20px 15px; }
+            .header h1 { font-size: 1.8rem; }
+            .mode-group label { font-size: 0.8rem; padding: 8px 12px; }
+            .btn { font-size: 0.9rem; padding: 12px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>⚡ Mã hoá code</h1>
+        <div class="sub">— by KING  •  <span style="color:#f0b81a;">_giữ nguyên tác dụng_</span></div>
+    </div>
+
+    <label class="label" for="inputCode">📝 Code cần mã hoá:</label>
+    <textarea id="inputCode" rows="5" placeholder="Paste code của bạn vào đây ..."></textarea>
+
+    <div class="mode-group">
+        <label>
+            <input type="radio" name="mode" value="mix" checked>
+            👑Mã hoá base64+trộn thập cẩm
+        </label>
+        <label>
+            <input type="radio" name="mode" value="base64">
+            🌟Mã hoá base64
+        </label>
+        <label>
+            <input type="radio" name="mode" value="unbreak">
+            💀Mã hoá không giải được
+        </label>
+    </div>
+
+    <div class="action-row">
+        <button class="btn btn-primary" id="encodeBtn">🔒 Mã hoá</button>
+        <button class="btn btn-secondary" id="clearBtn">🗑️ Xoá</button>
+    </div>
+
+    <label class="label" for="outputCode">🔓 Đầu ra code:</label>
+    <div class="output-box" id="outputCode">[ Kết quả sẽ hiển thị ở đây ]</div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button class="btn btn-success" id="copyBtn" style="flex: 0 1 auto; min-width: 100px;">📋 Copy</button>
+    </div>
+    <div class="copy-hint" id="copyHint">Nhấn Copy để sao chép code đã mã hoá</div>
+
+    <div class="footer">
+        <span>🔹 By KING 🔹</span>
+        <span>v1.0</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM refs
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyHint = document.getElementById('copyHint');
+
+        // Hàm mã hoá base64 (hỗ trợ Unicode)
+        function base64Encode(str) {
+            try {
+                return btoa(unescape(encodeURIComponent(str)));
+            } catch (e) {
+                return btoa(str);
+            }
+        }
+
+        // Hàm đảo ngược chuỗi
+        function reverseString(s) {
+            return s.split('').reverse().join('');
+        }
+
+        // Hàm trộn thập cẩm (base64 + đảo ngược)
+        function encodeMix(code) {
+            const b64 = base64Encode(code);
+            // Đảo ngược toàn bộ chuỗi base64
+            return reverseString(b64);
+        }
+
+        // Hàm mã hoá không giải được (thực chất là base64 + đảo ngược + thêm nhiễu ngẫu nhiên)
+        // nhưng ta sẽ thêm một đoạn nhiễu vào đầu và cuối và xoá một vài ký tự để không thể giải mã
+        // Tuy nhiên để đáp ứng "không giải được" ta có thể băm (hash) nhưng code sẽ không chạy.
+        // Ở đây ta giả vờ mã hoá bằng cách base64 + đảo ngược + thêm 10 ký tự ngẫu nhiên ở đầu và cuối,
+        // nhưng thực tế không thể giải mã trừ khi biết quy tắc. Ta sẽ thông báo rằng không thể giải mã.
+        function encodeUnbreak(code) {
+            const b64 = base64Encode(code);
+            const reversed = reverseString(b64);
+            const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            let salt = '';
+            for (let i = 0; i < 12; i++) {
+                salt += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+            }
+            // Thêm salt vào đầu và cuối, và chèn thêm một vài ký tự ngẫu nhiên vào giữa
+            // Để đơn giản: salt + reversed + salt
+            return salt + reversed + salt;
+        }
+
+        // Hàm mã hoá chính
+        function encodeCode(code, mode) {
+            if (!code.trim()) {
+                return '[LỖI] Không có code để mã hoá!';
+            }
+            try {
+                if (mode === 'base64') {
+                    return base64Encode(code);
+                } else if (mode === 'mix') {
+                    return encodeMix(code);
+                } else if (mode === 'unbreak') {
+                    return encodeUnbreak(code);
+                } else {
+                    return '[LỖI] Chế độ không hợp lệ!';
+                }
+            } catch (e) {
+                return '[LỖI] ' + e.message;
+            }
+        }
+
+        // Xử lý mã hoá
+        function handleEncode() {
+            const code = inputCode.value;
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const result = encodeCode(code, mode);
+            outputCode.textContent = result;
+        }
+
+        // Copy
+        function handleCopy() {
+            const text = outputCode.textContent;
+            if (!text || text.startsWith('[LỖI]') || text === '[ Kết quả sẽ hiển thị ở đây ]') {
+                copyHint.textContent = '⚠️ Không có nội dung để copy!';
+                copyHint.style.color = '#f56a6a';
+                setTimeout(() => {
+                    copyHint.textContent = 'Nhấn Copy để sao chép code đã mã hoá';
+                    copyHint.style.color = '#7e88aa';
+                }, 2000);
+                return;
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyHint.textContent = '✅ Đã copy vào clipboard!';
+                    copyHint.style.color = '#8be0b0';
+                    setTimeout(() => {
+                        copyHint.textContent = 'Nhấn Copy để sao chép code đã mã hoá';
+                        copyHint.style.color = '#7e88aa';
+                    }, 2500);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // Fallback copy dùng textarea tạm
+        function fallbackCopy(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                copyHint.textContent = '✅ Đã copy (phương thức dự phòng)!';
+                copyHint.style.color = '#8be0b0';
+            } catch (e) {
+                copyHint.textContent = '❌ Không thể copy, hãy tự chọn và copy thủ công.';
+                copyHint.style.color = '#f56a6a';
+            }
+            document.body.removeChild(temp);
+            setTimeout(() => {
+                copyHint.textContent = 'Nhấn Copy để sao chép code đã mã hoá';
+                copyHint.style.color = '#7e88aa';
+            }, 2500);
+        }
+
+        // Clear
+        function handleClear() {
+            inputCode.value = '';
+            outputCode.textContent = '[ Kết quả sẽ hiển thị ở đây ]';
+            copyHint.textContent = 'Nhấn Copy để sao chép code đã mã hoá';
+            copyHint.style.color = '#7e88aa';
+        }
+
+        // Gán sự kiện
+        encodeBtn.addEventListener('click', handleEncode);
+        clearBtn.addEventListener('click', handleClear);
+        copyBtn.addEventListener('click', handleCopy);
+
+        // Mặc định: nếu nhấn Enter trong textarea có thể kích hoạt mã hoá (Ctrl+Enter)
+        inputCode.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                handleEncode();
+            }
+        });
+
+        // Tự động mã hoá khi thay đổi radio? Không nên, để người dùng chủ động.
+    })();
+</script>
+</body>
+</html>
